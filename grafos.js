@@ -46,6 +46,8 @@ class Grafo {
 		this.ListaAdj = new Map();
 	}
 	
+	
+	
 	// funções para serem implementadas
 	
 	//adiciona um vértice no grafo
@@ -86,12 +88,16 @@ class Grafo {
 		}
 	}
 	
-	//menor caminho
+	//busca em largura
 	bfs(verticeInicial){
 		//criar um objeto de vértices visitados
 		//ele iniciará vazio por razões óbvias
 		
 		var visitado = {};
+		
+		//isso daqui vai ser como retorno da bfs no grafo
+		//ele vai possuir o vértice e o valor dele na bfs
+		var bfsNum = [];
 		
 		//criar um objeto para a fila
 		var fila = new Queue();
@@ -100,13 +106,18 @@ class Grafo {
 		visitado[verticeInicial] = true;
 		fila.enqueue(verticeInicial);
 		
+		//inicializando o valor da bfs e o valor inicial no retorno
+		var j = 1;
+		bfsNum.push([verticeInicial, 0])
+		
+		
 		//loop até que a fila esteja vazia
 		while (!fila.isEmpty()){
 			//pega o elemento da fila
 			var getElementoFila = fila.dequeue();
 			
 			//passando o vértice atual para o console
-			console.log(getElementoFila);
+			//console.log(getElementoFila + " | " + num[0]);
 			
 			//pega a lista adjacente do vértice atual
 			var getLista = this.ListaAdj.get(getElementoFila);
@@ -118,11 +129,79 @@ class Grafo {
 				
 				if (!visitado[elem]){
 					visitado[elem] = true;
+					bfsNum.push([elem, j])
 					fila.enqueue(elem);
 				}
 			}
+			
+			//após verificar todos os adjacentes, antes de seguir para o próximo vértice
+			//aumente o valor do caminho em 1
+			j++;
 		}
 		
+		return bfsNum;
+		
+	}
+	
+	//busca em largura com backtracking
+	dfs(verticeInicial){
+	 
+		var visitado = {};
+	 	
+	 	var dfsNum = [];
+	 	
+	 	//size é o "tamanho" do caminho;
+	 	var size = 1;
+		dfsNum.push([verticeInicial, 0])
+	 	
+		this.DFSTool(verticeInicial, visitado, dfsNum, size);
+		
+		this.DFSFix(dfsNum);
+		
+		return dfsNum;
+	}
+	 
+	// Função recursiva que processa todos os vértices adjacentes
+	DFSTool(vert, visitado, dfsNum, size){
+		visitado[vert] = true;
+		//console.log(vert);
+	 	
+	 	//pega os vértices adjacentes
+		var getVizinhos = this.ListaAdj.get(vert);
+	 
+		for (var i in getVizinhos) {
+			//esse lastSize é para resetar o size
+			var lastSize = size;
+		    var elemento = getVizinhos[i];
+		    if (!visitado[elemento]) {
+		    	dfsNum.push([elemento, size])
+		    	size++;
+		        this.DFSTool(elemento, visitado, dfsNum, size);
+		        size = lastSize;
+		    } else {
+		    	//caso ache um caminho menor no backtracking, volte
+		    	for (var i = 0; i < dfsNum.length; i++){
+					if (elemento == dfsNum[i][0] && size < dfsNum[i][1]){
+						//console.log("OK!");
+						dfsNum[i] = [elemento, size];
+					}
+				}
+		    }
+		}
+	}
+	
+	// Função para arrumar o retorno da Busca em Largura com Backtracking
+	DFSFix(dfsNum){
+		var ultimo = -1;
+		for (var i = 0; i < dfsNum.length; i++){
+			if (ultimo < dfsNum[i][1])
+				ultimo = dfsNum[i][1];
+		}
+		
+		for (var i = 0; i < dfsNum.length; i++){
+			dfsNum[i][1] = ultimo - dfsNum[i][1];
+			//console.log(dfsNum[i]);
+		}
 	}
 	
 	//kruskal
@@ -160,4 +239,8 @@ g.addAresta('C', 'F');
 // F -> E C
 g.printGrafo();
 console.log("\n-- BFS --\n");
-g.bfs('A');
+bfs = g.bfs('A');
+console.log(bfs[2]);
+console.log("\n-- DFS --\n");
+dfs = g.dfs('A');
+console.log(dfs[4]);
