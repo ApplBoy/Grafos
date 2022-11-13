@@ -127,21 +127,34 @@ class Grafo {
 		this.numVertices++;
 	}
 	
+	verAresta(src, dest){
+		var getArestas = this.ListaAdj.get(src)
+		for (var size in getArestas){
+			if (getArestas[size] == dest){
+				return false;
+			}
+		}
+		return true;
+	}
+	
 	//addAresta(v, w, É dirigido?)
 	//adiciona uma aresta no grafo
 	addAresta(src, dest, peso, dirc){
 		if (src != dest){
-			//pega a lista do vértice V (source, src) e põe o vértice W (destino, dest)
-			//denotando a aresta entre V e W
-			this.ListaAdj.get(src).push(dest);
-			this.ListaPes.get(src).push(peso);
-			
-			// Se o grafo for não-dirigido, o inverso também é verdadeiro.
-			if (dirc == true){
-				this.ListaAdj.get(dest).push(src);
-				this.ListaPes.get(dest).push(peso);
-			} else {
-				this.ehDirecionado = true; //servindo como catch de erro pro prim
+		
+			if(this.verAresta(src, dest)){
+				//pega a lista do vértice V (source, src) e põe o vértice W (destino, dest)
+				//denotando a aresta entre V e W
+				this.ListaAdj.get(src).push(dest);
+				this.ListaPes.get(src).push(peso);
+				
+				// Se o grafo for não-dirigido, o inverso também é verdadeiro.
+				if (dirc == true){
+					this.ListaAdj.get(dest).push(src);
+					this.ListaPes.get(dest).push(peso);
+				} else {
+					this.ehDirecionado = true; //servindo como catch de erro pro prim
+				}
 			}
 		} else {
 			throw Error('Loop detectado...');
@@ -416,7 +429,7 @@ class Grafo {
 					
 					if (!visitado[elem]){
 						fila.enqueue([elem, getElementoFila], pesoElem);
-						console.log([elem, getElementoFila], pesoElem);
+						//console.log([elem, getElementoFila], pesoElem);
 					} 
 				}
 				i++;
@@ -430,7 +443,7 @@ class Grafo {
 //--- DEBUG ---
 
 // Using the above implemented graph class
-var g = new Grafo();
+/*var g = new Grafo();
 var vertices = [ 'A', 'B', 'C', 'D', 'E', 'F', 'G' ];
  
 // adding vertices
@@ -438,7 +451,7 @@ for (var i = 0; i < vertices.length; i++) {
     g.addVert(vertices[i]);
 }
  
-/*// adding edges
+// adding edges
 g.addAresta('A', 'B', 1, true);
 g.addAresta('A', 'D', 2, true);
 g.addAresta('A', 'E', 3, true);
