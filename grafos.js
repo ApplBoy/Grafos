@@ -310,7 +310,7 @@ class Grafo {
 			}
 		}
 		
-		console.log();
+		//console.log();
 		
 		
 		var fila = new Queue();
@@ -318,15 +318,15 @@ class Grafo {
 		var j = 1;
 		fila.enqueue(verticeFinal);
 		visitado[verticeFinal] = true;
-		console.log(visitado);
+		
 		
 		while (!fila.isEmpty()){
-			
+			//console.log(visitado);
 			//pega o elemento da fila
 			var getElementoFila = fila.dequeue();
 			
 			//passando o vértice atual para o console
-			console.log(getElementoFila);
+			//console.log(getElementoFila);
 			
 			//pega a lista adjacente do vértice atual
 			var getLista = this.ListaAdj.get(getElementoFila);
@@ -336,40 +336,33 @@ class Grafo {
 			for (var size in getLista) {
 				var elem = getLista[size];
 				
-				if (!visitado[elem]){
+				if (!visitado[elem] || verticeInicial == elem){
 					visitado[elem] = true;
-					caminhoU.push([elem, this.somaCaminho(caminhoU, elem, j)])
-					console.log(caminhoU[size]);
+					caminhoU.push([elem, this.somaCaminho(caminhoU, elem, verticeInicial)])
+					//console.log(caminhoU[j]);
+					if(elem == verticeInicial){
+						break;
+					}
 					fila.enqueue(elem);
+					
 				} 
 			}
 			j++;
 		}
-		
-		//criar um array de numero de caminhos;
-		
-		
-		
-		/*for (var  i = 0; i < distanciaPrimeiro.length; i++){
-			if (distanciaPrimeiro[i][1] >= valorMaximo) {
-				//zerar o valor dele no array de caminhos
-			}
-		}*/
-
-		//verificar a distância
-		//adicionar adjacentes a lista com uma distância menor
-		//
+		return caminhoU;
 	}
 	
 	
-	somaCaminho(caminhoU, elem, j){
+	somaCaminho(caminhoU, elem, verticeInicial){
 			var soma = 0;
 			var getLista = this.ListaAdj.get(elem);
 			for (var size in getLista) {
 				var elementos = getLista[size];
-				for (var i = 0; i < caminhoU.length; i++){
-					if (caminhoU[i][0] == elementos){
-						soma = soma + caminhoU[i][1];
+					if (elementos != verticeInicial){
+					for (var i = 0; i < caminhoU.length; i++){
+						if (caminhoU[i][0] == elementos){
+							soma = soma + caminhoU[i][1];
+						}
 					}
 				}
 			}
@@ -445,7 +438,7 @@ for (var i = 0; i < vertices.length; i++) {
     g.addVert(vertices[i]);
 }
  
-// adding edges
+/*// adding edges
 g.addAresta('A', 'B', 1, true);
 g.addAresta('A', 'D', 2, true);
 g.addAresta('A', 'E', 3, true);
@@ -474,9 +467,15 @@ dfs = g.dfs('A');
 for (var i = 0; i < bfs.length; i++)
 	console.log(dfs[i]);
 console.log("\n-- CAMIHOS --\n");
-g.menorCaminho('A', 'F');
+console.log("\n- ignorados - \n");
+caminho = g.menorCaminho('A', 'G');
+console.log("\n- caminhos -\n");
+for (var i = 0; i < caminho.length; i++)
+	console.log(caminho[i]);
 console.log("\n-- CONEXIDADE --\n\nV: "+g.numVertices+" | É Conexo? "+g.ehConexo('A'));
 console.log("\n-- PRIM --\n");
 prim = g.prim('A');
 for (var i = 0; i < prim.length; i++)
-	console.log(prim[i]);
+	console.log(prim[i]);*/
+	
+export default Grafos;
