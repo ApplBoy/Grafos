@@ -1,7 +1,5 @@
 # Relatório: Implementação de Grafos.
 ## Quais foram as dificuldades na criação de grafos em Expo?
-##### Alunos: Eduardo Henrique Ferreira de Paula, Henderson Martins Barroso, Jaires Gomes de Sousa Filho, João Pedro Rocha Rezende, Saulo José de Lucas Silva
----
 
 ## Escolha da Linguagem
 
