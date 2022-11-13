@@ -38,39 +38,113 @@ class Queue {
     }
 }
 
+
+class QElement {
+    constructor(element, priority)
+    {
+        this.element = element;
+        this.priority = priority;
+    }
+}
+
+class PriorityQueue {
+    constructor() {
+        this.items = [];
+    }
+    
+    // adiciona o elemento na lista
+    enqueue(element, priority)
+	{
+		// creating object from queue element
+		var qElement = new QElement(element, priority);
+		var contain = false;
+	 
+		// iterating through the entire
+		// item array to add element at the
+		// correct location of the Queue
+		for (var i = 0; i < this.items.length; i++) {
+		    if (this.items[i].priority > qElement.priority) {
+		        // Once the correct location is found it is
+		        // enqueued
+		        this.items.splice(i, 0, qElement);
+		        contain = true;
+		        break;
+		    }
+		}
+	 
+		// if the element have the highest priority
+		// it is added at the end of the queue
+		if (!contain) {
+		    this.items.push(qElement);
+		}
+	}
+    
+    // remova o elemento na lista
+    dequeue() {
+        if(this.items.length > 0) {
+            return this.items.shift();
+        }
+    }
+    
+    // vê o último elemnto
+    peek() {
+        return this.items[this.items.length - 1];
+    }
+    
+    // verifica se a lista tá vazia
+    isEmpty(){
+       return this.items.length == 0;
+    }
+   
+    // o tamanho da lista
+    size(){
+        return this.items.length;
+    }
+ 
+    // limpar a lista
+    clear(){
+        this.items = [];
+    }
+}
+
+
 // Criando uma classe de Grafos
 class Grafo {
 	// definindo um vetor de vértices e lista adjacente
-	constructor(numDeVert){
-		this.numDeVert = numDeVert;
+	constructor(){ //numDeVert
+		//this.numDeVert = numDeVert;
 		this.ListaAdj = new Map();
 		this.ListaPes = new Map();
 	}
 	
-	
-	
-	// funções para serem implementadas
+	numVertices = 0;
 	
 	//adiciona um vértice no grafo
 	addVert(v){
 		//inicializa a lista adjacente com um vetor nulo
 		this.ListaAdj.set(v, []);
 		this.ListaPes.set(v, []);
+		this.numVertices++;
 	}
 	
 	//addAresta(v, w, É dirigido?)
 	//adiciona uma aresta no grafo
 	addAresta(src, dest, peso, dirc){
-	
-		//pega a lista do vértice V (source, src) e põe o vértice W (destino, dest)
-		//denotando a aresta entre V e W
-		this.ListaAdj.get(src).push(dest);
-		this.ListaPes.get(src).push(peso);
-		
-		// Se o grafo for não-dirigido, o inverso também é verdadeiro.
-		if (dirc == true){
-			this.ListaAdj.get(dest).push(src);
-			this.ListaPes.get(dest).push(peso);
+		if (src != dest){
+			//pega a lista do vértice V (source, src) e põe o vértice W (destino, dest)
+			//denotando a aresta entre V e W
+			this.ListaAdj.get(src).push(dest);
+			this.ListaPes.get(src).push(peso);
+			
+			// Se o grafo for não-dirigido, o inverso também é verdadeiro.
+			if (dirc == true){
+				this.ListaAdj.get(dest).push(src);
+				this.ListaPes.get(dest).push(peso);
+			} else {
+				this.ehDirecionado = true; //servindo como catch de erro pro prim
+			}
+		} else {
+			throw Error('Loop detectado...');
 		}
 		
 	}
@@ -118,10 +192,7 @@ class Grafo {
 		
 		//inicializando o valor da bfs e o valor inicial no retorno
 		var j = 1;
-<<<<<<< HEAD
 		//var pushes = 0;
-=======
->>>>>>> b862ffa2d533831c0e4504016d192c57bdfb5394
 		bfsNum.push([verticeInicial, 0])
 		
 		
@@ -132,11 +203,11 @@ class Grafo {
 			var getElementoFila = fila.dequeue();
 			
 			//passando o vértice atual para o console
-			//console.log(getElementoFila + " | " + num[0]);
+			//console.log(getElementoFila);
 			
 			//pega a lista adjacente do vértice atual
 			var getLista = this.ListaAdj.get(getElementoFila);
-			let verticeAnterior = null;
+			
 			//loop na lista e adiciona o elemento na fila
 			//se não foi processado ainda
 			for (var size in getLista) {
@@ -144,25 +215,24 @@ class Grafo {
 				
 				if (!visitado[elem]){
 					visitado[elem] = true;
-<<<<<<< HEAD
 					bfsNum.push([elem, bfsNum[j-1][1]+1])
-=======
-					bfsNum.push([elem, j])
->>>>>>> b862ffa2d533831c0e4504016d192c57bdfb5394
 					fila.enqueue(elem);
 				} 
 			}
-<<<<<<< HEAD
-=======
-			
-			//após verificar todos os adjacentes, antes de seguir para o próximo vértice
-			//aumente o valor do caminho em 1
->>>>>>> b862ffa2d533831c0e4504016d192c57bdfb5394
 			j++;
 		}
 		
 		return bfsNum;
 		
+	}
+	
+	//conexidade
+	ehConexo(verticeInicial){
+		var arvore = this.bfs(verticeInicial);
+		
+		if (arvore.length == this.numVertices){
+			return true;
+		} else { return false }
 	}
 	
 	//busca em largura com backtracking
@@ -178,23 +248,15 @@ class Grafo {
 	 	
 		this.DFSTool(verticeInicial, visitado, dfsNum, size);
 		
-<<<<<<< HEAD
 		//this.DFSFix(dfsNum);
-=======
-		this.DFSFix(dfsNum);
->>>>>>> b862ffa2d533831c0e4504016d192c57bdfb5394
 		
-		return dfsNum;
+		return dfsNum; //isso é uma matriz
 	}
 	 
 	// Função recursiva que processa todos os vértices adjacentes
 	DFSTool(vert, visitado, dfsNum, size){
 		visitado[vert] = true;
-<<<<<<< HEAD
-		console.log(vert);
-=======
 		//console.log(vert);
->>>>>>> b862ffa2d533831c0e4504016d192c57bdfb5394
 	 	
 	 	//pega os vértices adjacentes
 		var getVizinhos = this.ListaAdj.get(vert);
@@ -204,11 +266,7 @@ class Grafo {
 			var lastSize = size;
 		    var elemento = getVizinhos[i];
 		    if (!visitado[elemento]) {
-<<<<<<< HEAD
 		    	dfsNum.push([elemento, dfsNum[size-1][1]+1])
-=======
-		    	dfsNum.push([elemento, size])
->>>>>>> b862ffa2d533831c0e4504016d192c57bdfb5394
 		    	size++;
 		        this.DFSTool(elemento, visitado, dfsNum, size);
 		        size = lastSize;
@@ -216,58 +274,170 @@ class Grafo {
 		    	//caso ache um caminho menor no backtracking, volte
 		    	for (var i = 0; i < dfsNum.length; i++){
 					if (elemento == dfsNum[i][0] && size < dfsNum[i][1]){
-<<<<<<< HEAD
 						//console.log("OK! | "+elemento+" | "+size+" | "+dfsNum[i]);
 						dfsNum[i] = [elemento, dfsNum[size-1][1]+1];
 						size++;
 						this.DFSTool(elemento, visitado, dfsNum, size);
 						size = lastSize;
-=======
-						//console.log("OK!");
-						dfsNum[i] = [elemento, size];
->>>>>>> b862ffa2d533831c0e4504016d192c57bdfb5394
 					}
 				}
 		    }
 		}
 	}
 	
-<<<<<<< HEAD
 	//menor caminho
-	menorCaminho(verticeInicial, verticeFinal){
+	menorCaminho(verticeInicial, verticeFinal){ //g.menorCaminho('A', 'F');
 		//receber função com destino e inicio;
+		
+		var distanciaPrimeiro = this.dfs(verticeInicial);
+		
+		for(var nome = '', i = 0; nome != verticeFinal; i++){
+			nome = distanciaPrimeiro[i][0];
+			if (nome == verticeFinal){
+				var finalPos = i;
+			}
+		}
+		
+		var visitado = {};
+		
+		//verificar os valores da dfs se por acaso uma estiver maior ou igual ao valor do destino, zerar o numero de caminhos
+		var distMax = distanciaPrimeiro[finalPos][1];
+		for (var  i = 0; i < distanciaPrimeiro.length; i++){
+			if (distanciaPrimeiro[i][1] >= distMax && distanciaPrimeiro[i][0] != verticeFinal){
+				distanciaPrimeiro[i][1] = 0; //Aqui vai pegar acima distancia maxima
+				console.log(distanciaPrimeiro[i]);
+				visitado[distanciaPrimeiro[i][0]] = true;
+			}
+		}
+		
+		console.log();
+		
+		
+		var fila = new Queue();
+		var caminhoU = [[verticeFinal, 1]];
+		var j = 1;
+		fila.enqueue(verticeFinal);
+		visitado[verticeFinal] = true;
+		console.log(visitado);
+		
+		while (!fila.isEmpty()){
+			
+			//pega o elemento da fila
+			var getElementoFila = fila.dequeue();
+			
+			//passando o vértice atual para o console
+			console.log(getElementoFila);
+			
+			//pega a lista adjacente do vértice atual
+			var getLista = this.ListaAdj.get(getElementoFila);
+			
+			//loop na lista e adiciona o elemento na fila
+			//se não foi processado ainda
+			for (var size in getLista) {
+				var elem = getLista[size];
+				
+				if (!visitado[elem]){
+					visitado[elem] = true;
+					caminhoU.push([elem, this.somaCaminho(caminhoU, elem, j)])
+					console.log(caminhoU[size]);
+					fila.enqueue(elem);
+				} 
+			}
+			j++;
+		}
 		
 		//criar um array de numero de caminhos;
 		
-		//verificar os valores da dfs se por acaso uma estiver maior ou igual ao valor do destino, zerar o numero de caminhos
+		
+		
+		/*for (var  i = 0; i < distanciaPrimeiro.length; i++){
+			if (distanciaPrimeiro[i][1] >= valorMaximo) {
+				//zerar o valor dele no array de caminhos
+			}
+		}*/
 
 		//verificar a distância
 		//adicionar adjacentes a lista com uma distância menor
 		//
-=======
-	// Função para arrumar o retorno da Busca em Largura com Backtracking
-	DFSFix(dfsNum){
-		var ultimo = -1;
-		for (var i = 0; i < dfsNum.length; i++){
-			if (ultimo < dfsNum[i][1])
-				ultimo = dfsNum[i][1];
-		}
-		
-		for (var i = 0; i < dfsNum.length; i++){
-			dfsNum[i][1] = ultimo - dfsNum[i][1];
-			//console.log(dfsNum[i]);
-		}
->>>>>>> b862ffa2d533831c0e4504016d192c57bdfb5394
 	}
 	
-	//kruskal
+	
+	somaCaminho(caminhoU, elem, j){
+			var soma = 0;
+			var getLista = this.ListaAdj.get(elem);
+			for (var size in getLista) {
+				var elementos = getLista[size];
+				for (var i = 0; i < caminhoU.length; i++){
+					if (caminhoU[i][0] == elementos){
+						soma = soma + caminhoU[i][1];
+					}
+				}
+			}
+			return soma;
+		}
+	
 	//prim
+	prim(verticeInicial){
+		if (this.ehDirecionado) {
+			throw new Error('Algoritmo de Prim só funciona em grafos não direcionados...');
+		}
+
+		if (!this.ehConexo(verticeInicial)){
+	  		 new Error('Algoritmo de Prim só funciona em grafos conexos...');
+	  	}
+	  	
+		const fila = new PriorityQueue();
+		const visitado = {};
+
+	 	//visitado[verticeInicial] = true;
+		//fila.enqueue(verticeInicial);
+
+	  	var primNum = [];
+	  	
+	  	primNum = [];
+	  	
+	  	var i = 0;
+	  	fila.enqueue(verticeInicial, 0);
+	  	
+	  	while (!fila.isEmpty()){
+			
+			//pega o elemento da fila
+			var getProcessoFila = fila.dequeue().element;
+			var getElementoFila = getProcessoFila[0];
+			var getAnteriorFila = getProcessoFila[1];
+			if (!getAnteriorFila) getAnteriorFila = "Inicial";
+			if (!visitado[getElementoFila]){
+				visitado[getElementoFila] = true;
+				
+				primNum.push([[getElementoFila, getAnteriorFila], i]);
+			
+				//pega a lista adjacente do vértice atual
+				var getLista = this.ListaAdj.get(getElementoFila);
+				var getPeso = this.ListaPes.get(getElementoFila);
+				
+				//loop na lista e adiciona o elemento na fila
+				//se não foi processado ainda
+				for (var size in getLista) {
+					var elem = getLista[size];
+					var pesoElem = getPeso[size];
+					
+					if (!visitado[elem]){
+						fila.enqueue([elem, getElementoFila], pesoElem);
+						console.log([elem, getElementoFila], pesoElem);
+					} 
+				}
+				i++;
+			}
+		}
+				
+		return primNum;
+	}	
 }
 
 //--- DEBUG ---
 
 // Using the above implemented graph class
-var g = new Grafo(6);
+var g = new Grafo();
 var vertices = [ 'A', 'B', 'C', 'D', 'E', 'F', 'G' ];
  
 // adding vertices
@@ -297,17 +467,16 @@ g.addAresta('F', 'G', 9, true);
 g.printGrafo();
 console.log("\n-- BFS --\n");
 bfs = g.bfs('A');
-<<<<<<< HEAD
 for (var i = 0; i < bfs.length; i++)
 	console.log(bfs[i]);
 console.log("\n-- DFS --\n");
 dfs = g.dfs('A');
 for (var i = 0; i < bfs.length; i++)
 	console.log(dfs[i]);
-//console.log(dfs[4]);
-=======
-console.log(bfs[2]);
-console.log("\n-- DFS --\n");
-dfs = g.dfs('A');
-console.log(dfs[4]);
->>>>>>> b862ffa2d533831c0e4504016d192c57bdfb5394
+console.log("\n-- CAMIHOS --\n");
+g.menorCaminho('A', 'F');
+console.log("\n-- CONEXIDADE --\n\nV: "+g.numVertices+" | É Conexo? "+g.ehConexo('A'));
+console.log("\n-- PRIM --\n");
+prim = g.prim('A');
+for (var i = 0; i < prim.length; i++)
+	console.log(prim[i]);
