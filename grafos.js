@@ -44,6 +44,7 @@ class Grafo {
 	constructor(numDeVert){
 		this.numDeVert = numDeVert;
 		this.ListaAdj = new Map();
+		this.ListaPes = new Map();
 	}
 	
 	
@@ -54,19 +55,22 @@ class Grafo {
 	addVert(v){
 		//inicializa a lista adjacente com um vetor nulo
 		this.ListaAdj.set(v, []);
+		this.ListaPes.set(v, []);
 	}
 	
 	//addAresta(v, w, É dirigido?)
 	//adiciona uma aresta no grafo
-	addAresta(src, dest, dirc){
+	addAresta(src, dest, peso, dirc){
 	
 		//pega a lista do vértice V (source, src) e põe o vértice W (destino, dest)
 		//denotando a aresta entre V e W
 		this.ListaAdj.get(src).push(dest);
+		this.ListaPes.get(src).push(peso);
 		
 		// Se o grafo for não-dirigido, o inverso também é verdadeiro.
 		if (dirc == true){
 			this.ListaAdj.get(dest).push(src);
+			this.ListaPes.get(dest).push(peso);
 		}
 		
 	}
@@ -79,12 +83,18 @@ class Grafo {
 		//iteração entre os vértices
 		for (var i of get_keys){
 			var get_valores = this.ListaAdj.get(i);
+			var get_pesos = this.ListaPes.get(i);
 			var conc = "";
+			var pes = "";
 			
 			for (var j of get_valores){
 				conc += j + " ";
 			}
+			for (var j of get_pesos){
+				pes += j + " ";
+			}
 			console.log(i + " -> " + conc);
+			console.log(i + " => " + pes)
 		}
 	}
 	
@@ -108,11 +118,16 @@ class Grafo {
 		
 		//inicializando o valor da bfs e o valor inicial no retorno
 		var j = 1;
+<<<<<<< HEAD
+		//var pushes = 0;
+=======
+>>>>>>> b862ffa2d533831c0e4504016d192c57bdfb5394
 		bfsNum.push([verticeInicial, 0])
 		
 		
 		//loop até que a fila esteja vazia
 		while (!fila.isEmpty()){
+			
 			//pega o elemento da fila
 			var getElementoFila = fila.dequeue();
 			
@@ -121,21 +136,28 @@ class Grafo {
 			
 			//pega a lista adjacente do vértice atual
 			var getLista = this.ListaAdj.get(getElementoFila);
-			
+			let verticeAnterior = null;
 			//loop na lista e adiciona o elemento na fila
 			//se não foi processado ainda
-			for (var i in getLista) {
-				var elem = getLista[i];
+			for (var size in getLista) {
+				var elem = getLista[size];
 				
 				if (!visitado[elem]){
 					visitado[elem] = true;
+<<<<<<< HEAD
+					bfsNum.push([elem, bfsNum[j-1][1]+1])
+=======
 					bfsNum.push([elem, j])
+>>>>>>> b862ffa2d533831c0e4504016d192c57bdfb5394
 					fila.enqueue(elem);
-				}
+				} 
 			}
+<<<<<<< HEAD
+=======
 			
 			//após verificar todos os adjacentes, antes de seguir para o próximo vértice
 			//aumente o valor do caminho em 1
+>>>>>>> b862ffa2d533831c0e4504016d192c57bdfb5394
 			j++;
 		}
 		
@@ -156,7 +178,11 @@ class Grafo {
 	 	
 		this.DFSTool(verticeInicial, visitado, dfsNum, size);
 		
+<<<<<<< HEAD
+		//this.DFSFix(dfsNum);
+=======
 		this.DFSFix(dfsNum);
+>>>>>>> b862ffa2d533831c0e4504016d192c57bdfb5394
 		
 		return dfsNum;
 	}
@@ -164,7 +190,11 @@ class Grafo {
 	// Função recursiva que processa todos os vértices adjacentes
 	DFSTool(vert, visitado, dfsNum, size){
 		visitado[vert] = true;
+<<<<<<< HEAD
+		console.log(vert);
+=======
 		//console.log(vert);
+>>>>>>> b862ffa2d533831c0e4504016d192c57bdfb5394
 	 	
 	 	//pega os vértices adjacentes
 		var getVizinhos = this.ListaAdj.get(vert);
@@ -174,7 +204,11 @@ class Grafo {
 			var lastSize = size;
 		    var elemento = getVizinhos[i];
 		    if (!visitado[elemento]) {
+<<<<<<< HEAD
+		    	dfsNum.push([elemento, dfsNum[size-1][1]+1])
+=======
 		    	dfsNum.push([elemento, size])
+>>>>>>> b862ffa2d533831c0e4504016d192c57bdfb5394
 		    	size++;
 		        this.DFSTool(elemento, visitado, dfsNum, size);
 		        size = lastSize;
@@ -182,14 +216,35 @@ class Grafo {
 		    	//caso ache um caminho menor no backtracking, volte
 		    	for (var i = 0; i < dfsNum.length; i++){
 					if (elemento == dfsNum[i][0] && size < dfsNum[i][1]){
+<<<<<<< HEAD
+						//console.log("OK! | "+elemento+" | "+size+" | "+dfsNum[i]);
+						dfsNum[i] = [elemento, dfsNum[size-1][1]+1];
+						size++;
+						this.DFSTool(elemento, visitado, dfsNum, size);
+						size = lastSize;
+=======
 						//console.log("OK!");
 						dfsNum[i] = [elemento, size];
+>>>>>>> b862ffa2d533831c0e4504016d192c57bdfb5394
 					}
 				}
 		    }
 		}
 	}
 	
+<<<<<<< HEAD
+	//menor caminho
+	menorCaminho(verticeInicial, verticeFinal){
+		//receber função com destino e inicio;
+		
+		//criar um array de numero de caminhos;
+		
+		//verificar os valores da dfs se por acaso uma estiver maior ou igual ao valor do destino, zerar o numero de caminhos
+
+		//verificar a distância
+		//adicionar adjacentes a lista com uma distância menor
+		//
+=======
 	// Função para arrumar o retorno da Busca em Largura com Backtracking
 	DFSFix(dfsNum){
 		var ultimo = -1;
@@ -202,6 +257,7 @@ class Grafo {
 			dfsNum[i][1] = ultimo - dfsNum[i][1];
 			//console.log(dfsNum[i]);
 		}
+>>>>>>> b862ffa2d533831c0e4504016d192c57bdfb5394
 	}
 	
 	//kruskal
@@ -212,7 +268,7 @@ class Grafo {
 
 // Using the above implemented graph class
 var g = new Grafo(6);
-var vertices = [ 'A', 'B', 'C', 'D', 'E', 'F' ];
+var vertices = [ 'A', 'B', 'C', 'D', 'E', 'F', 'G' ];
  
 // adding vertices
 for (var i = 0; i < vertices.length; i++) {
@@ -220,14 +276,15 @@ for (var i = 0; i < vertices.length; i++) {
 }
  
 // adding edges
-g.addAresta('A', 'B');
-g.addAresta('A', 'D');
-g.addAresta('A', 'E');
-g.addAresta('B', 'C');
-g.addAresta('D', 'E');
-g.addAresta('E', 'F');
-g.addAresta('E', 'C');
-g.addAresta('C', 'F');
+g.addAresta('A', 'B', 1, true);
+g.addAresta('A', 'D', 2, true);
+g.addAresta('A', 'E', 3, true);
+g.addAresta('B', 'C', 4, true);
+g.addAresta('D', 'E', 5, true);
+g.addAresta('E', 'F', 6, true);
+g.addAresta('E', 'C', 7, true);
+g.addAresta('C', 'F', 8, true);
+g.addAresta('F', 'G', 9, true);
  
 // prints all vertex and
 // its adjacency list
@@ -240,7 +297,17 @@ g.addAresta('C', 'F');
 g.printGrafo();
 console.log("\n-- BFS --\n");
 bfs = g.bfs('A');
+<<<<<<< HEAD
+for (var i = 0; i < bfs.length; i++)
+	console.log(bfs[i]);
+console.log("\n-- DFS --\n");
+dfs = g.dfs('A');
+for (var i = 0; i < bfs.length; i++)
+	console.log(dfs[i]);
+//console.log(dfs[4]);
+=======
 console.log(bfs[2]);
 console.log("\n-- DFS --\n");
 dfs = g.dfs('A');
 console.log(dfs[4]);
+>>>>>>> b862ffa2d533831c0e4504016d192c57bdfb5394
