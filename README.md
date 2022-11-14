@@ -1,4 +1,5 @@
 # Relatório: Implementação de Grafos.
+#### Participantes: Saulo José, Eduardo Henrique, Jaires Filho, João Pedro, Henderson Martins
 ## Quais foram as dificuldades na criação de grafos em Expo?
 
 ## Escolha da Linguagem
@@ -87,8 +88,7 @@ Mas após algumas horas e uma noite inteira, conseguimos implementar o algoritmo
 
 Enfim, foi um bom projeto para se realizar, mesmo que custasse bastante do nosso foco, readquirimos algumas de nossas habilidade com Expo e JavaScript, além de compreendermos melhor as funções dentro do Back-end e Front-end de um aplicativo Web e Android.
 
+---
 
---link para download do .apk:
-
-https://exp-shell-app-assets.s3.us-west-1.amazonaws.com/android/%40oswoen/segunndo_projeto-19c6c80b27754f03befadbe201d3b30f-signed.apk
+[Clique Aqui](https://exp-shell-app-assets.s3.us-west-1.amazonaws.com/android/%40oswoen/segunndo_projeto-19c6c80b27754f03befadbe201d3b30f-signed.apk) para fazer o Download do .apk
 
