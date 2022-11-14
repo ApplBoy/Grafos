@@ -6,7 +6,7 @@
 
 Nosso grupo acadêmico decidiu escolher primeiramente a linguagem C como foco.
 
-Mas após algumas discussõess, decidimos utilizar uma linguagem de programação incomum ao aprendizado aos iniciante da Universidade Federal de Jataí.
+Mas após algumas discussões, decidimos utilizar uma linguagem de programação incomum ao aprendizado aos iniciante da Universidade Federal de Jataí.
 
 E como boa parte dos nossos intrigantes possuem uma habilidade considerável com o JavaScript e o Expo (React-Native), decidimos utilizar as mesmas.
 
