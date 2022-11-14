@@ -127,40 +127,41 @@ class Grafo {
 		this.numVertices++;
 	}
 	
-	verAresta(src, dest){
-		var getArestas = this.ListaAdj.get(src)
-		for (var size in getArestas){
-			if (getArestas[size] == dest){
-				return false;
-			}
-		}
-		return true;
-	}
-	
 	//addAresta(v, w, É dirigido?)
 	//adiciona uma aresta no grafo
-	addAresta(src, dest, peso, dirc){
-		if (src != dest){
-		
-			if(this.verAresta(src, dest)){
-				//pega a lista do vértice V (source, src) e põe o vértice W (destino, dest)
-				//denotando a aresta entre V e W
-				this.ListaAdj.get(src).push(dest);
-				this.ListaPes.get(src).push(peso);
-				
-				// Se o grafo for não-dirigido, o inverso também é verdadeiro.
-				if (dirc == true){
-					this.ListaAdj.get(dest).push(src);
-					this.ListaPes.get(dest).push(peso);
-				} else {
-					this.ehDirecionado = true; //servindo como catch de erro pro prim
-				}
-			}
-		} else {
-			throw Error('Loop detectado...');
-		}
-		
-	}
+	verAresta(src, dest){
+        var getArestas = this.ListaAdj.get(src)
+        for (var size in getArestas){
+            if (getArestas[size] == dest){
+                return false;
+            }
+        }
+        return true;
+    }
+    
+    
+    addAresta(src, dest, peso, dirc){
+        if (src != dest){
+        
+            if(this.verAresta(src, dest)){
+                //pega a lista do vértice V (source, src) e põe o vértice W (destino, dest)
+                //denotando a aresta entre V e W
+                this.ListaAdj.get(src).push(dest);
+                this.ListaPes.get(src).push(peso);
+                
+                // Se o grafo for não-dirigido, o inverso também é verdadeiro.
+                if (dirc == true){
+                    this.ListaAdj.get(dest).push(src);
+                    this.ListaPes.get(dest).push(peso);
+                } else {
+                    this.ehDirecionado = true; //servindo como catch de erro pro prim
+                }
+            }
+        } else {
+            throw Error('Loop detectado...');
+        }
+        
+    }
 	
 	//printa os vétices e a lista adjacente
 	printGrafo(){
@@ -382,76 +383,70 @@ class Grafo {
 			return soma;
 		}
 	
-	//prim
-	prim(verticeInicial){
-		if (this.ehDirecionado) {
-			throw new Error('Algoritmo de Prim só funciona em grafos não direcionados...');
-		}
+	 //prim
+	 prim(verticeInicial){
+        if (this.ehDirecionado) {
+            throw new Error('Algoritmo de Prim só funciona em grafos não direcionados...');
+        }
 
-		if (!this.ehConexo(verticeInicial)){
-	  		 new Error('Algoritmo de Prim só funciona em grafos conexos...');
-	  	}
-	  	
-		const fila = new PriorityQueue();
-		const visitado = {};
+        if (!this.ehConexo(verticeInicial)){
+               new Error('Algoritmo de Prim só funciona em grafos conexos...');
+          }
+          
+        const fila = new PriorityQueue();
+        const visitado = {};
 
-	 	//visitado[verticeInicial] = true;
-		//fila.enqueue(verticeInicial);
+         //visitado[verticeInicial] = true;
+        //fila.enqueue(verticeInicial);
 
-	  	var primNum = [];
-	  	
-	  	primNum = [];
-	  	
-	  	var i = 0;
-	  	fila.enqueue(verticeInicial, 0);
-	  	
-	  	while (!fila.isEmpty()){
-			
-			//pega o elemento da fila
-			var getProcessoFila = fila.dequeue().element;
-			var getElementoFila = getProcessoFila[0];
-			var getAnteriorFila = getProcessoFila[1];
-			if (!getAnteriorFila) getAnteriorFila = "Inicial";
-			if (!visitado[getElementoFila]){
-				visitado[getElementoFila] = true;
-				
-				primNum.push([[getElementoFila, getAnteriorFila], i]);
-			
-				//pega a lista adjacente do vértice atual
-				var getLista = this.ListaAdj.get(getElementoFila);
-				var getPeso = this.ListaPes.get(getElementoFila);
-				
-				//loop na lista e adiciona o elemento na fila
-				//se não foi processado ainda
-				for (var size in getLista) {
-					var elem = getLista[size];
-					var pesoElem = getPeso[size];
-					
-					if (!visitado[elem]){
-						fila.enqueue([elem, getElementoFila], pesoElem);
-						//console.log([elem, getElementoFila], pesoElem);
-					} 
-				}
-				i++;
-			}
-		}
-				
-		return primNum;
-	}	
+          var primNum = [];
+          
+          primNum = [];
+          
+          var i = 0;
+          fila.enqueue(verticeInicial, 0);
+          
+          while (!fila.isEmpty()){
+            
+            //pega o elemento da fila
+            var getProcessoFila = fila.dequeue().element;
+            var getElementoFila = getProcessoFila[0];
+            var getAnteriorFila = getProcessoFila[1];
+            if (!getAnteriorFila) getAnteriorFila = "Inicial";
+            if (!visitado[getElementoFila]){
+                visitado[getElementoFila] = true;
+                
+                primNum.push([getElementoFila, getAnteriorFila, i]);
+            
+                //pega a lista adjacente do vértice atual
+                var getLista = this.ListaAdj.get(getElementoFila);
+                var getPeso = this.ListaPes.get(getElementoFila);
+                
+                //loop na lista e adiciona o elemento na fila
+                //se não foi processado ainda
+                for (var size in getLista) {
+                    var elem = getLista[size];
+                    var pesoElem = getPeso[size];
+                    
+                    if (!visitado[elem]){
+                        fila.enqueue([elem, getElementoFila], pesoElem);
+                        //console.log([elem, getElementoFila], pesoElem);
+                    } 
+                }
+                i++;
+            }
+        }
+                
+        return primNum;
+    }
 }
 
 //--- DEBUG ---
 
 // Using the above implemented graph class
-/*var g = new Grafo();
-var vertices = [ 'A', 'B', 'C', 'D', 'E', 'F', 'G' ];
+
  
-// adding vertices
-for (var i = 0; i < vertices.length; i++) {
-    g.addVert(vertices[i]);
-}
- 
-// adding edges
+/*// adding edges
 g.addAresta('A', 'B', 1, true);
 g.addAresta('A', 'D', 2, true);
 g.addAresta('A', 'E', 3, true);
@@ -491,4 +486,4 @@ prim = g.prim('A');
 for (var i = 0; i < prim.length; i++)
 	console.log(prim[i]);*/
 	
-export default Grafos;
+export default Grafo;
