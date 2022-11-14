@@ -36,7 +36,7 @@ Bem, começamos com o de sempre, criamos um mockup do app, e fomos realizando al
 
 Agora, ao grande prato principal do nosso código, os algoritmos.
 
-Começamos com o básico, Busca em Largura, para usar a busca em largura, precisamos de uma lista, então criamos uma classe `Queue` que servirá como a mesma, ela tem os métodos de adicionar, remover, ver o último da lista, etc...
+Começamos com o básico: Busca em Largura. Para usar a busca em largura, precisamos de uma lista, então criamos uma classe `Queue` que servirá como a mesma, ela tem os métodos de adicionar, remover, ver o último da lista, etc...
 
 Após realizado a classe, aí que começamos a criar o método da Busca em Largura, nomeada no código como `bfs()`, esse método recebe o nome de um vértice inicial;
 
